@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import { Button } from '@/components/ui/button';
 import { Sparkles, Menu, X } from 'lucide-react';
+import Link from "next/link";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
   return (
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
@@ -38,9 +40,11 @@ const Navbar = () => {
             >
               Testimonials
             </a>
+            <Link to={'/signin'}>
             <Button variant="outline" className="border-slate-300">
               Sign In
-            </Button>
+            </Button>    
+            </Link>
             <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
               Start Free Trial
             </Button>
