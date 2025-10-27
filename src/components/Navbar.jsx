@@ -1,15 +1,14 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
-import { Button } from '@/components/ui/button';
-import { Sparkles, Menu, X } from 'lucide-react';
-// import { SignInButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import { Sparkles, Menu, X } from "lucide-react";
 import Link from "next/link";
-
+import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+  const { isSignedIn } = useUser();
 
   return (
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
@@ -24,38 +23,49 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a
-              href="#features"
-              className="text-slate-600 hover:text-slate-900 transition"
-            >
-              Features
-            </a>
-            <a
-              href="#pricing"
-              className="text-slate-600 hover:text-slate-900 transition"
-            >
-              Pricing
-            </a>
-            <a
-              href="#testimonials"
-              className="text-slate-600 hover:text-slate-900 transition"
-            >
-              Testimonials
-            </a>
-            <Link href='sign-in'>
-            <Button variant="outline" className="border-slate-300 cursor-pointer">
-              Sign In
-            </Button>    
-            
-            </Link>
+            {isSignedIn ? (
+              <>
+                <a
+                  href="#features"
+                  className="text-slate-600 hover:text-slate-900 transition"
+                >
+                  Features
+                </a>
+                <a
+                  href="#pricing"
+                  className="text-slate-600 hover:text-slate-900 transition"
+                >
+                  Pricing
+                </a>
+                <a
+                  href="#testimonials"
+                  className="text-slate-600 hover:text-slate-900 transition"
+                >
+                  Testimonials
+                </a>
 
-            <Link href='sign-up'>
-            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-              Start Free Trial
-            </Button>
-            
-            </Link>
-        
+                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  Start Free Trial
+                </Button>
+              </>
+            ) : (
+              <>
+                <SignInButton>
+                  <Button
+                    variant={"outline"}
+                    className="border-primary/50 text-primary hover:text-white hover:bg-primary/10"
+                  >
+                    Sign In
+                  </Button>
+                </SignInButton>
+
+                <SignUpButton>
+                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                    Sign Up
+                  </Button>
+                </SignUpButton>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -75,38 +85,48 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-slate-200">
-          <div className="px-4 py-4 space-y-3">
-            <a
-              href="#features"
-              className="block text-slate-600 hover:text-slate-900"
-            >
-              Features
-            </a>
-            <a
-              href="#pricing"
-              className="block text-slate-600 hover:text-slate-900"
-            >
-              Pricing
-            </a>
-            <a
-              href="#testimonials"
-              className="block text-slate-600 hover:text-slate-900"
-            >
-              Testimonials
-            </a>
+          {isSignedIn ? (
+            <>
+              <div className="px-4 py-4 space-y-3">
+                <a
+                  href="#features"
+                  className="block text-slate-600 hover:text-slate-900"
+                >
+                  Features
+                </a>
+                <a
+                  href="#pricing"
+                  className="block text-slate-600 hover:text-slate-900"
+                >
+                  Pricing
+                </a>
+                <a
+                  href="#testimonials"
+                  className="block text-slate-600 hover:text-slate-900"
+                >
+                  Testimonials
+                </a>
 
-            <Link href='sign-in'>
-            <Button variant="outline" className="w-full">
-              Sign In
-            </Button>
-            </Link >
-            <Link href='sign-up'>
-            <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
-              Start Free Trial
-            </Button>
-            
-            </Link>
-          </div>
+                <Link href="sign-up">
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+                    Start Free Trial
+                  </Button>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <SignInButton>
+                <Button
+                  variant={"outline"}
+                  className="border-primary/50 text-primary hover:text-white hover:bg-primary/10"
+                >
+                  Sign In
+                </Button>
+              </SignInButton>
+
+            </>
+          )}
         </div>
       )}
     </nav>
