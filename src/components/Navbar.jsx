@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { Button } from '@/components/ui/button';
 import { Sparkles, Menu, X } from 'lucide-react';
+// import { SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
+
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -40,11 +42,15 @@ const Navbar = () => {
             >
               Testimonials
             </a>
-            <Link to={'/signin'}>
-            <Button variant="outline" className="border-slate-300">
+            <Link href='sign-in'>
+            <Button variant="outline" className="border-slate-300 cursor-pointer">
               Sign In
             </Button>    
+            
             </Link>
+        
+         
+          
             <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
               Start Free Trial
             </Button>
