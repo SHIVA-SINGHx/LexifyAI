@@ -48,10 +48,14 @@ const Navbar = () => {
             </Button>    
             
             </Link>
-        
+
+            <Link href='sign-up'>
             <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
               Start Free Trial
             </Button>
+            
+            </Link>
+        
           </div>
 
           {/* Mobile Menu Button */}
@@ -90,12 +94,18 @@ const Navbar = () => {
             >
               Testimonials
             </a>
+
+            <Link href='sign-in'>
             <Button variant="outline" className="w-full">
               Sign In
             </Button>
+            </Link >
+            <Link href='sign-up'>
             <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
               Start Free Trial
             </Button>
+            
+            </Link>
           </div>
         </div>
       )}
