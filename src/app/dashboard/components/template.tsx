@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-
+import { contentTemplates } from "@/lib/content";
 
 export const Template = () => {
-  const [templateList, setTemplateList] = useState("");
+  const [templateList, setTemplateList] = useState(contentTemplates);
 
 ;
 
