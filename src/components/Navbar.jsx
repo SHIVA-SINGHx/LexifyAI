@@ -44,10 +44,12 @@ const Navbar = () => {
                 >
                   Testimonials
                 </a>
-
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Link href="/dashboard">
+                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 cursor-pointer">
                   Start Free Trial
                 </Button>
+                
+                </Link>
 
                 <UserButton />
               </>
@@ -62,8 +64,8 @@ const Navbar = () => {
                   </Button>
                 </SignInButton>
 
-                <Link href="/sign-up">
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Link href="/dashboard">
+                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 cursor-pointer">
                     Start Free Trial
                   </Button>
                 </Link>
@@ -123,8 +125,8 @@ const Navbar = () => {
                 Testimonials
               </a>
 
-              <Link href="/sign-up">
-                <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+              <Link href="/dashboard">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 cursor-pointer">
                   Start Free Trial
                 </Button>
               </Link>

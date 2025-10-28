@@ -1,11 +1,21 @@
-import React from 'react'
+import React from 'react';
+import SearchDashboard from './components/search-dashboard';
+// import { auth } from "@clerk/nextjs/server";
+// import { redirect } from "next/navigation";
 
-const page = () => {
+const Page = () => {
+//   const { userId } = auth();
+
+  // Redirect to sign-in if user is not logged in
+//   if (!userId) {
+//     redirect("/sign-in");
+//   }
+
   return (
     <div>
-      <h1>dashboard</h1>
+      <SearchDashboard />
     </div>
-  )
+  );
 }
 
-export default page
+export default Page;

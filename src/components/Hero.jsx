@@ -3,6 +3,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button';
 import { Sparkles, ArrowRight, } from 'lucide-react';
+import Link from 'next/link';
 
 const Hero = () => {
   return (
@@ -26,9 +27,12 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-6">
+            <Link href="/dashboard">
+            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-6 cursor-pointer">
               Start Free Trial <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
+            
+            </Link>
             <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-slate-300">
               Watch Demo
             </Button>
