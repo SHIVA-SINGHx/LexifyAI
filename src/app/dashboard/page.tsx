@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchDashboard from './components/search-dashboard';
+import Template from './components/template';
 // import { auth } from "@clerk/nextjs/server";
 // import { redirect } from "next/navigation";
 
@@ -14,6 +15,7 @@ const Page = () => {
   return (
     <div>
       <SearchDashboard />
+      <Template/>
     </div>
   );
 }
