@@ -7,6 +7,7 @@ import Link from "next/link";
 import { SignInButton, UserButton, SignOutButton, useUser } from "@clerk/nextjs";
 
 const Navbar = () => {
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isSignedIn } = useUser();
 

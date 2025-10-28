@@ -1,12 +1,20 @@
-"use client"
 import Navbar from "../components/Navbar"
 import Hero from "../components/Hero"
 import Features from "../components/Features"
 import Pricing from "../components/Pricing"
 import Cta from "../components/Cta"
 import Footer from "../components/Footer"
+import { auth } from "@clerk/nextjs/server"
+import { redirect } from "next/navigation"
+
 
 export default function Home() {
+  
+  const {userId} = auth();
+  
+  if(userId){
+    redirect("/dashboard")
+  }
 
 
   return (
