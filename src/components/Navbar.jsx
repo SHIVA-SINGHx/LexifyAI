@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
+import { SignInButton, UserButton, SignOutButton, useUser } from "@clerk/nextjs";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,23 +47,25 @@ const Navbar = () => {
                 <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
                   Start Free Trial
                 </Button>
+
+                <UserButton />
               </>
             ) : (
               <>
                 <SignInButton>
                   <Button
                     variant={"outline"}
-                    className="border-primary/50 text-primary hover:text-white hover:bg-primary/10"
+                    className="border-primary/50 text-primary hover:text-black hover:bg-primary/10"
                   >
                     Sign In
                   </Button>
                 </SignInButton>
 
-                <SignUpButton>
-                  <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                    Sign Up
+                <Link href="/sign-up">
+                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    Start Free Trial
                   </Button>
-                </SignUpButton>
+                </Link>
               </>
             )}
           </div>
@@ -86,46 +88,57 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-slate-200">
           {isSignedIn ? (
-            <>
-              <div className="px-4 py-4 space-y-3">
-                <a
-                  href="#features"
-                  className="block text-slate-600 hover:text-slate-900"
-                >
-                  Features
-                </a>
-                <a
-                  href="#pricing"
-                  className="block text-slate-600 hover:text-slate-900"
-                >
-                  Pricing
-                </a>
-                <a
-                  href="#testimonials"
-                  className="block text-slate-600 hover:text-slate-900"
-                >
-                  Testimonials
-                </a>
-
-                <Link href="sign-up">
-                  <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
-                    Start Free Trial
-                  </Button>
-                </Link>
+            <div className="px-4 py-4 space-y-3">
+          
+              <div className="flex items-center justify-between">
+                <div>
+                  <UserButton />
+                </div>
+                <div>
+                  <SignOutButton>
+                    <Button variant="outline" className="ml-2">
+                      Sign Out
+                    </Button>
+                  </SignOutButton>
+                </div>
               </div>
-            </>
+
+              <a
+                href="#features"
+                className="block text-slate-600 hover:text-slate-900"
+              >
+                Features
+              </a>
+              <a
+                href="#pricing"
+                className="block text-slate-600 hover:text-slate-900"
+              >
+                Pricing
+              </a>
+              <a
+                href="#testimonials"
+                className="block text-slate-600 hover:text-slate-900"
+              >
+                Testimonials
+              </a>
+
+              <Link href="/sign-up">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+                  Start Free Trial
+                </Button>
+              </Link>
+            </div>
           ) : (
-            <>
+            <div className="px-4 py-4">
               <SignInButton>
                 <Button
                   variant={"outline"}
-                  className="border-primary/50 text-primary hover:text-white hover:bg-primary/10"
+                  className="border-primary/50 text-primary hover:text-white hover:bg-primary/10 w-full"
                 >
                   Sign In
                 </Button>
               </SignInButton>
-
-            </>
+            </div>
           )}
         </div>
       )}
