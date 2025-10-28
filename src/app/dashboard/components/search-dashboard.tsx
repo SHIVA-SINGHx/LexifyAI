@@ -1,4 +1,4 @@
-import { Auth } from "@/components/auth";
+
 import { SearchIcon } from "lucide-react";
 import React from "react";
 import { Categories } from "./categories";
@@ -48,9 +48,7 @@ export const SearchDashboard = ({
           />
         </div>
         <Categories items={categories} />
-        <div className="ml-auto">
-          <Auth />
-        </div>
+
       </div>
     </div>
   );

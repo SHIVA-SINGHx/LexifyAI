@@ -1,5 +1,5 @@
 import React from "react";
-import { CategoryItem } from "./category-item";
+import { CategoryItem } from "./categories-item";
 
 export interface CategoryProps {
   name: string;
