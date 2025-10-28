@@ -35,8 +35,9 @@ const Sidebar = () => {
       <div className="m-10 h-max flex flex-col justify-between">
         {
             menu.map((menu)=>(
-                <Link href={menu.path} key={menu.name} className="flex">
+                <Link href={menu.path} key={menu.name} className="flex gap-2 mb-2 hover:bg-primary hover:text-white cursor-pointer rounded-lg items-center">
                     <menu.icon className="h-6 w-6"></menu.icon>
+                    <h2 className="text-lg">{menu.name}</h2>
                 
                 </Link>
             ))
