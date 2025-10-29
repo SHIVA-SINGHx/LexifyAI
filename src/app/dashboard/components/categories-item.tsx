@@ -2,7 +2,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CategoryProps } from "./categories";
 import { cn } from "@/lib/utils";
-
+import qs from "query-string";
 
 export const CategoryItem = ({ name, value }: CategoryProps) => {
   const pathname = usePathname();
