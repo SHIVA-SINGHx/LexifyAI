@@ -1,56 +1,91 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader } from "lucide-react";
+import { useState } from "react";
+import { chatSession } from "@/lib/gemini-ai";
+import axios from "axios";
 import { contentTemplates } from "@/lib/content";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { Editor } from "../[templateSlug]/components/editor";
 
-export const TemplateList = ({ searchInput }: { searchInput: string }) => {
-  const [templateList, setTemplateList] = useState(contentTemplates);
+interface templateSlugProps {
+  templateSlug: string;
+}
 
-  const searchParams = useSearchParams();
-  const searchCategory = searchParams.get("category");
+const TemplatePage = ({ params }: { params: templateSlugProps }) => {
+  const [isLoading, setisLoading] = useState(false);
+  const [aiOutput, setAIOutput] = useState<string>("");
 
-  useEffect(() => {
-    if (searchCategory === "All") {
-      setTemplateList(contentTemplates);
-    } else if (searchCategory) {
-      const filteredTemplates = contentTemplates.filter(
-        (item) => item.category === searchCategory
-      );
-      setTemplateList(filteredTemplates);
-    } else {
-      setTemplateList(contentTemplates);
+  const selectedTemplate = contentTemplates.find(
+    (item) => item.slug === params.templateSlug
+  );
+
+  const generateAIContent = async (formData: FormData) => {
+    setisLoading(true);
+    try {
+      let dataSet = {
+        title: formData.get("title"),
+        description: formData.get("description"),
+      };
+
+      const selectedPrompt = selectedTemplate?.aiPrompt;
+      const finalAIPrompt = JSON.stringify(dataSet) + ", " + selectedPrompt;
+
+      const result = await chatSession.sendMessage(finalAIPrompt);
+      setAIOutput(result.response.text());
+
+      const response = await axios.post("/api/", {
+        title: dataSet.title,
+        description: result.response.text(),
+        templateUsed: selectedTemplate?.name,
+      });
+      console.log("response: " + response);
+      setisLoading(false);
+    } catch (error) {
+      console.log(error);
     }
-  }, [searchCategory]);
-
-  // Search Input
-  useEffect(() => {
-    if (searchInput && searchInput.length > 2) {
-      const filteredTemplates = contentTemplates.filter((item) =>
-        item.name.toLowerCase().includes(searchInput.toLowerCase())
-      );
-
-      setTemplateList(filteredTemplates);
-    } else {
-      setTemplateList(contentTemplates);
-    }
-  }, [searchInput]);
-
+  };
+  const onSubmit = async (formData: FormData) => {
+    generateAIContent(formData);
+  };
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-5 mt-5">
-      {templateList.map((template) => (
-        <div key={template.slug}>
-          <Link
-            href={`/dashboard/${template.slug}`}
-            className="bg-white w-full rounded-lg h-[200px] py-4 px-4 text-center flex flex-col justify-center"
-          >
-            <template.icon className="h-12 w-12 mx-auto"></template.icon>
-            <h2 className="font-semibold mt-5">{template.name}</h2>
-          </Link>
+    <div className="mx-5 py-2">
+      <div className="mt-5 py-6 px-4 bg-white rounded">
+        <h2 className="font-medium">{selectedTemplate?.name}</h2>
+      </div>
+
+      <form action={onSubmit}>
+        <div className="flex flex-col gap-4 p-5 mt-5 bg-white">
+          {selectedTemplate?.form?.map((form) => (
+            <div key={selectedTemplate.slug}>
+              <label>{form.label}</label>
+              {form.field === "input" ? (
+                <div className="mt-5">
+                  <Input name="title"></Input>
+                </div>
+              ) : (
+                <div className="mt-5">
+                  <Textarea name="description" />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-      ))}
+        <Button className="mt-5" type="submit">
+          {isLoading ? (
+            <Loader className="animate-spin"></Loader>
+          ) : (
+            "Generate Content"
+          )}
+        </Button>
+      </form>
+      <div className="my-10">
+        <Editor value={isLoading ? "Generating..." : aiOutput} />
+      </div>
     </div>
   );
 };
+
+export default TemplatePage;
