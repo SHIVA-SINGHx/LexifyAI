@@ -25,7 +25,7 @@ const TemplatePage = ({ params }: { params: templateSlugProps }) => {
   const generateAIContent = async (formData: FormData) => {
     setisLoading(true);
     try {
-      let dataSet = {
+      const dataSet = {
         title: formData.get("title"),
         description: formData.get("description"),
       };

@@ -1,26 +1,19 @@
-import React from 'react';
-import { TemplateList } from './components/template';
+"use client";
+
+import { useState } from "react";
+import TemplatePage from "./components/template";
+import { SearchDashboard } from "./components/search-dashboard";
 
 
-// import { SearchDashboard } from './components/search-dashboard';
-
-// import { auth } from "@clerk/nextjs/server";
-// import { redirect } from "next/navigation";
-
-const Page = () => {
-//   const { userId } = auth();
-
-  // Redirect to sign-in if user is not logged in
-//   if (!userId) {
-//     redirect("/sign-in");
-//   }
+const Dashboard = () => {
+  const [searchInput, setSearchInput] = useState<string>();
 
   return (
     <div>
-      {/* <SearchDashboard/> */}
-      <TemplateList/>
+      <SearchDashboard onSearchInput={setSearchInput} />
+      <TemplatePage searchInput={searchInput as string} />
     </div>
   );
-}
+};
 
-export default Page;
+export default Dashboard;
