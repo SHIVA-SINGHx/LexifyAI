@@ -1,6 +1,7 @@
 import React from 'react';
+import { TemplateList } from './components/template';
 
-import { Template } from './components/template';
+
 // import { SearchDashboard } from './components/search-dashboard';
 
 // import { auth } from "@clerk/nextjs/server";
@@ -17,7 +18,7 @@ const Page = () => {
   return (
     <div>
       {/* <SearchDashboard/> */}
-      <Template/>
+      <TemplateList/>
     </div>
   );
 }

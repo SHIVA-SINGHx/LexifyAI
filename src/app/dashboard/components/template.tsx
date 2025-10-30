@@ -1,13 +1,42 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { contentTemplates } from "@/lib/content";
+import { useEffect, useState } from "react";
 
-export const Template = () => {
+import { contentTemplates } from "@/lib/content";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
+export const TemplateList = ({ searchInput }: { searchInput: string }) => {
   const [templateList, setTemplateList] = useState(contentTemplates);
 
-;
+  const searchParams = useSearchParams();
+  const searchCategory = searchParams.get("category");
+
+  useEffect(() => {
+    if (searchCategory === "All") {
+      setTemplateList(contentTemplates);
+    } else if (searchCategory) {
+      const filteredTemplates = contentTemplates.filter(
+        (item) => item.category === searchCategory
+      );
+      setTemplateList(filteredTemplates);
+    } else {
+      setTemplateList(contentTemplates);
+    }
+  }, [searchCategory]);
+
+  // Search Input
+  useEffect(() => {
+    if (searchInput && searchInput.length > 2) {
+      const filteredTemplates = contentTemplates.filter((item) =>
+        item.name.toLowerCase().includes(searchInput.toLowerCase())
+      );
+
+      setTemplateList(filteredTemplates);
+    } else {
+      setTemplateList(contentTemplates);
+    }
+  }, [searchInput]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mx-5 mt-5">
