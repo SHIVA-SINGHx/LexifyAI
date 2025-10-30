@@ -14,7 +14,7 @@ interface templateSlugProps {
   templateSlug: string;
 }
 
-const TemplatePage = ({ params }: { params: templateSlugProps }) => {
+const TemplateView = ({ params }: { params: templateSlugProps }) => {
   const [isLoading, setisLoading] = useState(false);
   const [aiOutput, setAIOutput] = useState<string>("");
 
@@ -88,4 +88,4 @@ const TemplatePage = ({ params }: { params: templateSlugProps }) => {
   );
 };
 
-export default TemplatePage;
+export default TemplateView;

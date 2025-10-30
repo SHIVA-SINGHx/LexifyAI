@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import TemplatePage from "./components/template";
+
 import { SearchDashboard } from "./components/search-dashboard";
+import TemplatePage from "./[templateSlug]/page";
 
 
 const Dashboard = () => {
