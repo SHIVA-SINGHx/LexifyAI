@@ -18,6 +18,7 @@ export const contentTemplates = [
     form: [
       {
         label: "Youtube Video Description Title",
+        slug: "youtube-description",
         field: "input",
         name: "niche",
         required: true,

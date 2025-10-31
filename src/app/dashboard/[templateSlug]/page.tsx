@@ -7,28 +7,18 @@ import { Loader } from "lucide-react";
 import { useState } from "react";
 import { chatSession } from "@/lib/gemini-ai";
 import axios from "axios";
-import { Editor } from "./components/editor";
 import { contentTemplates } from "@/lib/content";
+import { Editor } from "./components/editor";
 
-interface templateSlugProps {
-  templateSlug: string;
+interface TemplatePageProps {
+  params: {
+    templateSlug: string;
+  };
 }
 
-const TemplatePage = ({ params }: { params: templateSlugProps }) => {
-  const [isLoading, setisLoading] = useState(false);
+const TemplatePage = ({ params }: TemplatePageProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [aiOutput, setAIOutput] = useState<string>("");
-
-  // Add error handling for missing templateSlug
-  if (!params?.templateSlug) {
-    return (
-      <div className="mx-5 py-6">
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-lg font-medium text-red-600">Error</h2>
-          <p className="text-gray-600">No template selected. Please select a template first.</p>
-        </div>
-      </div>
-    );
-  }
 
   const selectedTemplate = contentTemplates.find(
     (item) => item.slug === params.templateSlug
@@ -36,75 +26,66 @@ const TemplatePage = ({ params }: { params: templateSlugProps }) => {
 
   if (!selectedTemplate) {
     return (
-      <div className="mx-5 py-6">
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="text-lg font-medium text-red-600">Template Not Found</h2>
-          <p className="text-gray-600">The requested template does not exist.</p>
-        </div>
+      <div className="p-10">
+        <h2 className="text-xl font-bold text-red-600">
+          Template Not Found
+        </h2>
+        <p className="text-gray-600">
+          The requested template doesn’t exist. Please go back to dashboard.
+        </p>
       </div>
     );
   }
 
   const generateAIContent = async (formData: FormData) => {
-    setisLoading(true);
+    setIsLoading(true);
     try {
-      let dataSet = {
+      const dataSet = {
         title: formData.get("title"),
         description: formData.get("description"),
       };
 
-      const selectedPrompt = selectedTemplate?.aiPrompt;
+      const selectedPrompt = selectedTemplate.aiPrompt;
       const finalAIPrompt = JSON.stringify(dataSet) + ", " + selectedPrompt;
 
       const result = await chatSession.sendMessage(finalAIPrompt);
       setAIOutput(result.response.text());
 
-      const response = await axios.post("/api/", {
+      await axios.post("/api/", {
         title: dataSet.title,
         description: result.response.text(),
-        templateUsed: selectedTemplate?.name,
+        templateUsed: selectedTemplate.name,
       });
-      console.log("response: " + response);
-      setisLoading(false);
+
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
-  const onSubmit = async (formData: FormData) => {
-    generateAIContent(formData);
-  };
-  return (
-    <div className="mx-5 py-2">
-      <div className="mt-5 py-6 px-4 bg-white rounded">
-        <h2 className="font-medium">{selectedTemplate?.name}</h2>
-      </div>
 
-      <form action={onSubmit}>
-        <div className="flex flex-col gap-4 p-5 mt-5 bg-white">
-          {selectedTemplate?.form?.map((form) => (
-            <div key={selectedTemplate.slug}>
-              <label>{form.label}</label>
-              {form.field === "input" ? (
-                <div className="mt-5">
-                  <Input name="title"></Input>
-                </div>
-              ) : (
-                <div className="mt-5">
-                  <Textarea name="description" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <Button className="mt-5" type="submit">
-          {isLoading ? (
-            <Loader className="animate-spin"></Loader>
-          ) : (
-            "Generate Content"
-          )}
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-semibold mb-6">{selectedTemplate.name}</h1>
+
+      <form action={generateAIContent} className="space-y-6 bg-white p-6 rounded-lg shadow">
+        {selectedTemplate.form.map((form) => (
+          <div key={form.label}>
+            <label className="block mb-2 font-medium">{form.label}</label>
+            {form.field === "input" ? (
+              <Input name="title" placeholder="Enter title..." />
+            ) : (
+              <Textarea name="description" placeholder="Enter details..." />
+            )}
+          </div>
+        ))}
+
+        <Button type="submit" className="mt-4">
+          {isLoading ? <Loader className="animate-spin" /> : "Generate Content"}
         </Button>
       </form>
-      <div className="my-10">
+
+      <div className="mt-10">
         <Editor value={isLoading ? "Generating..." : aiOutput} />
       </div>
     </div>
