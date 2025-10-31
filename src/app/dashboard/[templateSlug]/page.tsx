@@ -18,9 +18,32 @@ const TemplatePage = ({ params }: { params: templateSlugProps }) => {
   const [isLoading, setisLoading] = useState(false);
   const [aiOutput, setAIOutput] = useState<string>("");
 
+  // Add error handling for missing templateSlug
+  if (!params?.templateSlug) {
+    return (
+      <div className="mx-5 py-6">
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-lg font-medium text-red-600">Error</h2>
+          <p className="text-gray-600">No template selected. Please select a template first.</p>
+        </div>
+      </div>
+    );
+  }
+
   const selectedTemplate = contentTemplates.find(
     (item) => item.slug === params.templateSlug
   );
+
+  if (!selectedTemplate) {
+    return (
+      <div className="mx-5 py-6">
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-lg font-medium text-red-600">Template Not Found</h2>
+          <p className="text-gray-600">The requested template does not exist.</p>
+        </div>
+      </div>
+    );
+  }
 
   const generateAIContent = async (formData: FormData) => {
     setisLoading(true);
