@@ -12,7 +12,6 @@ const DashboardPage = () => {
             <div className="flex flex-col items-center text-center">
               <template.icon className="text-4xl text-blue-600 mb-4" />
               <h3 className="text-lg font-semibold">{template.name}</h3>
-              <p className="text-gray-500 text-sm mt-2">{template.desc}</p>
             </div>
           </div>
         </Link>
