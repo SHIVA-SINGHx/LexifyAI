@@ -5,23 +5,18 @@ import { contentTemplates } from "@/lib/content";
 
 const DashboardPage = () => {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">AI Content Templates</h1>
-
-      <div className="grid grid-cols-3 gap-6">
-        {contentTemplates.map((template) => (
-          <Link
-            key={template.slug}
-            href={`/dashboard/${template.slug}`}
-            className="bg-white border p-5 rounded-lg hover:shadow-md transition cursor-pointer"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <template.icon className="text-2xl text-blue-600" />
-              <h2 className="font-semibold">{template.name}</h2>
+    <div className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {contentTemplates.map((template) => (
+        <Link key={template.slug} href={`/dashboard/${template.slug}`}>
+          <div className="bg-white rounded-xl p-6 shadow hover:shadow-lg cursor-pointer transition">
+            <div className="flex flex-col items-center text-center">
+              <template.icon className="text-4xl text-blue-600 mb-4" />
+              <h3 className="text-lg font-semibold">{template.name}</h3>
+              <p className="text-gray-500 text-sm mt-2">{template.desc}</p>
             </div>
-          </Link>
-        ))}
-      </div>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 };
