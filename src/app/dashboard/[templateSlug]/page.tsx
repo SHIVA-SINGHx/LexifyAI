@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,12 +11,13 @@ import { contentTemplates } from "@/lib/content";
 import { Editor } from "./components/editor";
 
 interface TemplatePageProps {
-  templateSlug: string;
+  params: {
+    templateSlug: string;
+  };
 }
 
 const TemplatePage = ({ params }: TemplatePageProps) => {
-  const resolvedParams = use(params);
-  const { templateSlug } = resolvedParams;
+  const { templateSlug } = params;
 
   const [isLoading, setIsLoading] = useState(false);
   const [aiOutput, setAIOutput] = useState<string>("");
@@ -40,26 +40,27 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
   const generateAIContent = async (formData: FormData) => {
     setIsLoading(true);
     try {
-      const dataSet = {
-        title: formData.get("title"),
-        description: formData.get("description"),
-      };
+      const title = formData.get("title") as string;
+      const description = formData.get("description") as string;
 
       const selectedPrompt = selectedTemplate.aiPrompt;
-      const finalAIPrompt = JSON.stringify(dataSet) + ", " + selectedPrompt;
+      const finalPrompt = `${selectedPrompt}\n\nTitle: ${title}\nDescription: ${description}`;
 
-      const result = await chatSession.sendMessage(finalAIPrompt);
-      setAIOutput(result.response.text());
+      //Call Gemini API
+      const result = await chatSession.sendMessage(finalPrompt);
+      const responseText = await result.response.text();
 
-      await axios.post("/api/", {
-        title: dataSet.title,
-        description: result.response.text(),
+      setAIOutput(responseText);
+
+      // Save to DB (optional)
+      await axios.post("/api", {
+        title,
+        description: responseText,
         templateUsed: selectedTemplate.name,
       });
-
-      setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error("Gemini Error:", error);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -70,34 +71,29 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
         <h2 className="font-medium">{selectedTemplate.name}</h2>
       </div>
 
-      <form>
-        <div className="mt-8">
-          {selectedTemplate.form.map((form) => (
-            <div key={form.label}>
-              <label>{form.label}</label>
-              {form.field === "input" ? (
-                <div className="mt-5">
-                  <Input name="title" />
-                </div>
-              ) : (
-                <div className="mt-5">
-                  <Textarea name="description" required />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <Button className="mt-5 cursor-pointer" type="submit">
-          {isLoading ? (
-            <Loader className="animate-spin"></Loader>
-          ) : (
-            "Generate Content"
-          )}
+      <form action={generateAIContent} className="space-y-6 mt-6">
+        {selectedTemplate.form.map((form) => (
+          <div key={form.label}>
+            <label className="block mb-2">{form.label}</label>
+            {form.field === "input" ? (
+              <Input name="title" placeholder="Enter title..." required />
+            ) : (
+              <Textarea
+                name="description"
+                placeholder="Enter description..."
+                required
+              />
+            )}
+          </div>
+        ))}
+
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? <Loader className="animate-spin" /> : "Generate Content"}
         </Button>
       </form>
-      <div className="my-10">
-        <Editor value={aiOutput} onChange={setAIOutput} />
 
+      <div className="my-10">
+        <Editor value={isLoading ? "Generating..." : aiOutput} />
       </div>
     </div>
   );
