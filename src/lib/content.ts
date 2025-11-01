@@ -14,11 +14,11 @@ export const contentTemplates = [
     icon: FaYoutube,
     aiPrompt:
       "Give me youtube video description Ideas based on given video description outline and title and give me result in Rich Text Editor format",
-    slug: "youtube-description",
+    slug: "generate-youtube-description",
     form: [
       {
         label: "Youtube Video Description Title",
-        slug: "youtube-description",
+        
         field: "input",
         name: "niche",
         required: true,

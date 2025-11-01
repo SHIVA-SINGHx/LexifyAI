@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react"; // <-- import use() from React
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,25 +12,26 @@ import { contentTemplates } from "@/lib/content";
 import { Editor } from "./components/editor";
 
 interface TemplatePageProps {
-  params: {
+ 
     templateSlug: string;
-  };
+
 }
 
 const TemplatePage = ({ params }: TemplatePageProps) => {
+  const resolvedParams = use(params);
+  const { templateSlug } = resolvedParams;
+
   const [isLoading, setIsLoading] = useState(false);
   const [aiOutput, setAIOutput] = useState<string>("");
 
   const selectedTemplate = contentTemplates.find(
-    (item) => item.slug === params.templateSlug
+    (item) => item.slug === templateSlug
   );
 
   if (!selectedTemplate) {
     return (
       <div className="p-10">
-        <h2 className="text-xl font-bold text-red-600">
-          Template Not Found
-        </h2>
+        <h2 className="text-xl font-bold text-red-600">Template Not Found</h2>
         <p className="text-gray-600">
           The requested template doesn’t exist. Please go back to dashboard.
         </p>
@@ -66,28 +68,28 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold mb-6">{selectedTemplate.name}</h1>
-
-      <form action={generateAIContent} className="space-y-6 bg-white p-6 rounded-lg shadow">
-        {selectedTemplate.form.map((form) => (
-          <div key={form.label}>
-            <label className="block mb-2 font-medium">{form.label}</label>
-            {form.field === "input" ? (
-              <Input name="title" placeholder="Enter title..." />
-            ) : (
-              <Textarea name="description" placeholder="Enter details..." />
-            )}
-          </div>
-        ))}
-
-        <Button type="submit" className="mt-4">
-          {isLoading ? <Loader className="animate-spin" /> : "Generate Content"}
-        </Button>
-      </form>
-
-      <div className="mt-10">
-        <Editor value={isLoading ? "Generating..." : aiOutput} />
+      <div className="mt-5 py-6 px-4 bg-black text-white rounded">
+        <h2 className="font-medium">{selectedTemplate.name}</h2>
       </div>
+
+      <form>
+        <div className="mt-8">
+          {selectedTemplate.form.map((form) => (
+            <div key={form.label}>
+              <label>{form.label}</label>
+              {form.field === "input" ? (
+                <div className="mt-5">
+                  <Input name="title" />
+                </div>
+              ) : (
+                <div className="mt-5">
+                  <Textarea name="description" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </form>
     </div>
   );
 };
