@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react"; // <-- import use() from React
+import { use } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,9 +12,7 @@ import { contentTemplates } from "@/lib/content";
 import { Editor } from "./components/editor";
 
 interface TemplatePageProps {
- 
-    templateSlug: string;
-
+  templateSlug: string;
 }
 
 const TemplatePage = ({ params }: TemplatePageProps) => {
@@ -83,13 +81,24 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
                 </div>
               ) : (
                 <div className="mt-5">
-                  <Textarea name="description" />
+                  <Textarea name="description" required />
                 </div>
               )}
             </div>
           ))}
         </div>
+        <Button className="mt-5 cursor-pointer" type="submit">
+          {isLoading ? (
+            <Loader className="animate-spin"></Loader>
+          ) : (
+            "Generate Content"
+          )}
+        </Button>
       </form>
+      <div className="my-10">
+        <Editor value={aiOutput} onChange={setAIOutput} />
+
+      </div>
     </div>
   );
 };
