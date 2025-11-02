@@ -10,8 +10,13 @@ import {
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Upgrade = () => {
+
+  const handleOnClick = async () =>{
+    
+  }
 
 
   return (
@@ -37,9 +42,12 @@ const Upgrade = () => {
                 <Check></Check> Retain All History
               </p>
             </div>
-            <Button className="mt-5">
+            <Link href={'/payment'}>
+            <Button className="mt-5 cursor-pointer" onClick={handleOnClick}>
               Purchase
             </Button>
+            
+            </Link>
           </CardContent>
         </Card>
       </div>

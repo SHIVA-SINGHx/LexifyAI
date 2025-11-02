@@ -1,5 +1,4 @@
 
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -11,7 +10,7 @@ datasource db {
 }
 
 
-model AIOutput{
+model ai_output{
   id String @id @default(uuid())
   userId String
   title String?
