@@ -11,11 +11,12 @@ import {
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import axios from "axios";
 
 const Upgrade = () => {
 
   const handleOnClick = async () =>{
-    
+    const res = await axios.post("/api/upgrade/checkout")
   }
 
 
