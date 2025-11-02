@@ -1,9 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY as string;
 
 if (!apiKey) {
-  throw new Error("Missing NEXT_PUBLIC_GEMINI_API_KEY in .env.local");
+  throw new Error("Missing NEXT_PUBLIC_GEMINI_API_KEY in .env.local" );
 }
 
 

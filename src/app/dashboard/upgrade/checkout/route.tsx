@@ -22,7 +22,29 @@ export async function POST(req: Request){
                     unit_amount: 1000
                 }
             }
-        ]
+        ];
+
+        let purchase = await db.stripe_customer.create({
+            data:{
+                userId: userId,
+                credit: 10000
+            }
+        });
+
+        let stripeCustomer = await db.stripe_customer.findUnique({
+            where:{
+                userId: userId
+            },
+            select:{
+                stripeCustomerId: true,
+            },
+        })
+
+        if(!stripeCustomer){
+            const customer = await stripeCustomer.customers.create({
+                
+            })
+        }
 
     } catch (error) {
         return new NextResponse("Internal Server Error: ", {status:500})
