@@ -49,9 +49,10 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
       const finalAIPrompt = JSON.stringify(dataSet) + ", " + selectedPrompt;
 
       const result = await chatSession.sendMessage(finalAIPrompt);
-      setAIOutput(result.response.text());
+      const text = await result.response.text();
+      setAIOutput(text);
 
-      await axios.post("/api/", {
+       await axios.post("/api", {
         title: dataSet.title,
         description: result.response.text(),
         templateUsed: selectedTemplate.name,
@@ -75,7 +76,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
         <h2 className="font-medium">{selectedTemplate.name}</h2>
       </div>
 
-      <form action={onsubmit}>
+      <form action={onSubmit}>
         <div className="mt-8">
           {selectedTemplate.form.map((form) => (
             <div key={form.label}>
