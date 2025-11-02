@@ -19,3 +19,23 @@ model ai_output{
   createdAt DateTime @default(now())
 
 }
+
+model purchase {
+  id String @id @default(uuid())
+  userId String
+  credit String
+  createdAt DateTime @default(now())
+}
+
+model stripe_customer {
+  id String @id @default(uuid())
+  userId String @unique
+  stripeCustomerId String @unique
+  createdAt DateTime @default(now())
+}
+
+model user{
+  id String @id @unique @default(uuid())
+  userId String @unique
+  total_credit Float @default(10000)
+}
