@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY as string;
+
 
 if (!apiKey) {
   throw new Error("Missing NEXT_PUBLIC_GEMINI_API_KEY in .env.local" );
@@ -10,8 +12,11 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+  model: "gemini-2.5-flash",
 });
+
+// const models = await genAI.listModels();
+// console.log(models);
 
 const generationConfig = {
   temperature: 1,
