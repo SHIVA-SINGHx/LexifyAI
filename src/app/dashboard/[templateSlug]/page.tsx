@@ -58,17 +58,13 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
       const generatedText = result.response.text();
       setAIOutput(generatedText);
 
-      // Save to database (optional)
-      try {
-        const response = await axios.post("/api/save-content", {
-          title: formData[selectedTemplate.form[0]?.name || "niche"] || "Untitled",
-          description: generatedText,
-          templateUsed: selectedTemplate?.name,
-        });
-        console.log("Saved:", response.data);
-      } catch (dbError) {
-        console.log("DB save failed (non-critical):", dbError);
-      }
+      // Save to database
+      const saveResult = await axios.post("/api/save-content", {
+        title: formData[selectedTemplate.form[0]?.name || "title"] || "Untitled",
+        description: generatedText,
+        templateUsed: selectedTemplate.name,
+      });
+      console.log("Saved:", saveResult.data);
 
       setIsLoading(false);
     } catch (error) {
