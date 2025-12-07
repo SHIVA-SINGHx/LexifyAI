@@ -26,7 +26,7 @@ const History = async () => {
   }
 
   // Fetch user's generated content from database
-  const history = await db.aIOutput.findMany({
+  const history = await db.ai_output.findMany({
     where: {
       userId: userId,
     },
