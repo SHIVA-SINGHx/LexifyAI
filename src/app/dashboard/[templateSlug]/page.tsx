@@ -7,7 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { chatSession } from "@/lib/gemini-ai";
-import axios from "axios";
+import { useUser } from "@clerk/nextjs";
+import axios from "@/lib/axios";
 import { contentTemplates } from "@/lib/content";
 import { Editor } from "./components/editor";
 
@@ -63,22 +64,60 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
         title: formData[selectedTemplate.form[0]?.name || "title"] || "Untitled",
         description: generatedText,
         templateUsed: selectedTemplate.name,
-      });
+      }, { withCredentials: true });
       console.log("Saved:", saveResult.data);
 
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Generation error:", error);
-      setAIOutput("Error generating content. Check console.");
+      const serverMessage = error?.response?.data?.error;
+      if (error?.response?.status === 401) {
+        setAIOutput("You must be signed in to save generated content. Please sign in and try again.");
+      } else if (error?.response?.status === 500 && serverMessage) {
+        setAIOutput(`Server error: ${serverMessage}`);
+      } else {
+        setAIOutput("Error generating content. Check console.");
+      }
       setIsLoading(false);
     }
   };
+
+  const checkAuth = async () => {
+    try {
+      const res = await axios.get("/api/debug-auth", { withCredentials: true });
+      console.log("Auth debug:", res.data);
+      if (!res.data.isSignedIn) {
+        alert("Not signed in. Please sign in and try again.");
+      } else {
+        alert(`Signed in as ${res.data.userId}`);
+      }
+    } catch (err: any) {
+      console.error("Auth check failed:", err);
+      alert("Auth check failed. See console for details.");
+    }
+  }
+
+  // const checkDb = async () => {
+  //   try {
+  //     const res = await axios.get('/api/debug-db', { withCredentials: true });
+  //     console.log('DB debug:', res.data);
+  //     alert(`DB: total=${res.data.total} userId=${res.data.user?.userId ?? 'none'}`);
+  //   } catch (err: any) {
+  //     console.error('Debug DB failed:', err);
+  //     alert('Debug DB failed. See console.');
+  //   }
+  // }
+
+  const { isSignedIn, user } = useUser();
 
   return (
     <div className="p-8">
       <div className="mt-5 py-6 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded">
         <h2 className="font-semibold text-lg">{selectedTemplate.name}</h2>
         <p className="text-sm text-blue-100">{selectedTemplate.desc}</p>
+        <p className="text-xs text-blue-100 mt-2">
+          {isSignedIn ? `Signed in${user?.primaryEmailAddress ? ` as ${user.primaryEmailAddress.emailAddress}` : ''}` : 'Not signed in'}
+        </p>
       </div>
 
       <form onSubmit={generateAIContent}>
@@ -120,11 +159,12 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
           ))}
         </div>
 
-        <Button
-          className="mt-5 cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-          type="submit"
-          disabled={isLoading}
-        >
+        <div className="flex gap-2 items-center mt-5">
+          <Button
+            className="cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            type="submit"
+            disabled={isLoading}
+          >
           {isLoading ? (
             <>
               <Loader className="animate-spin mr-2" /> Generating...
@@ -132,7 +172,12 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
           ) : (
             "Generate Content"
           )}
-        </Button>
+          </Button>
+          <Button type="button" onClick={checkAuth} variant="outline">
+            Check Auth
+          </Button>
+
+        </div>
       </form>
 
       <div className="my-10">

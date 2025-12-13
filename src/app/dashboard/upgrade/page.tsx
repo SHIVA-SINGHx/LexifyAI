@@ -11,12 +11,21 @@ import {
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/lib/axios";
 
 const Upgrade = () => {
 
   const handleOnClick = async () =>{
-    const res = await axios.post("/api/upgrade/checkout")
+    try {
+      const res = await axios.post("/api/upgrade/checkout", null, { withCredentials: true })
+      console.log("Checkout response", res.data)
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        console.error("Not authorized. Please sign in.")
+      } else {
+        console.error(error)
+      }
+    }
   }
 
 

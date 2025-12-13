@@ -9,7 +9,8 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECERT_KEY as string, {
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth;
+    const { userId, emailAddresses } = auth();
+    console.warn("[/api/upgrade/checkout] cookies:", req.headers.get("cookie"));
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -46,10 +47,10 @@ export async function POST(req: Request) {
 
     if (!stripeCustomer) {
       const customer = await stripe.customers.create({
-        email: user?.emailAddresses[0].emailAddress,
+        email: emailAddresses?.[0]?.emailAddress ?? undefined,
       });
 
-      let stripeCustomer = await db.stripeCustomer.create({
+      let stripeCustomer = await db.stripe_customer.create({
         data: {
           userId: userId,
           stripeCustomerId: customer.id,
