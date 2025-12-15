@@ -60,14 +60,14 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
       setAIOutput(generatedText);
 
       // Save to database
-      const saveResult = await axios.post("/api/save-content", {
-        title: formData[selectedTemplate.form[0]?.name || "title"] || "Untitled",
-        description: generatedText,
-        templateUsed: selectedTemplate.name,
-      }, { withCredentials: true });
-      console.log("Saved:", saveResult.data);
+      // const saveResult = await axios.post("/api/save-content", {
+      //   title: formData[selectedTemplate.form[0]?.name || "title"] || "Untitled",
+      //   description: generatedText,
+      //   templateUsed: selectedTemplate.name,
+      // }, { withCredentials: true });
+      // console.log("Saved:", saveResult.data);
 
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (error: any) {
       console.error("Generation error:", error);
       const serverMessage = error?.response?.data?.error;
@@ -129,6 +129,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
               </label>
               {form.field === "input" ? (
                 <Input
+                
                   name={form.name || form.label}
                   placeholder={form.label}
                   value={formData[form.name || form.label] || ""}
@@ -173,9 +174,9 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
             "Generate Content"
           )}
           </Button>
-          <Button type="button" onClick={checkAuth} variant="outline">
+          {/* <Button type="button" onClick={checkAuth} variant="outline">
             Check Auth
-          </Button>
+          </Button> */}
 
         </div>
       </form>

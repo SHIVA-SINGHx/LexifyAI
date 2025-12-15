@@ -25,13 +25,6 @@ model purchase {
   createdAt DateTime @default(now())
 }
 
-model stripe_customer {
-  id String @id @default(uuid())
-  userId String @unique
-  stripeCustomerId String @unique
-  createdAt DateTime @default(now())
-}
-
 model user{
   id String @id @unique @default(uuid())
   userId String @unique
