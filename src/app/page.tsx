@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar"
 import Hero from "../components/Hero"
 import Features from "../components/Features"
 import Pricing from "../components/Pricing"
+import Testimonials from "../components/Testimonials"
 import Cta from "../components/Cta"
 import Footer from "../components/Footer"
 import { auth } from "@clerk/nextjs/server"
@@ -18,7 +19,7 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       {/* Navigation */}
       <Navbar/>
     
@@ -30,6 +31,8 @@ export default function Home() {
   
       {/* Pricing Section */}
       <Pricing/>
+
+      <Testimonials/>
 
       {/* CTA Section */}
       <Cta/>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { SignInButton, UserButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { ThemeToggle } from "./ThemeToggle";
 
 const Navbar = () => {
   
@@ -12,14 +13,14 @@ const Navbar = () => {
   const { isSignedIn } = useUser();
 
   return (
-    <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
+    <nav className="fixed top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-slate-900">LexifyAI</span>
+            <span className="text-xl font-bold text-slate-900 dark:text-white">LexifyAI</span>
           </div>
 
           {/* Desktop Menu */}
@@ -27,20 +28,20 @@ const Navbar = () => {
             {isSignedIn ? (
               <>
                 <a
-                  href="#features"
-                  className="text-slate-600 hover:text-slate-900 transition"
+                  href="/#features"
+                  className="text-slate-600 transition hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
                 >
                   Features
                 </a>
                 <a
-                  href="#pricing"
-                  className="text-slate-600 hover:text-slate-900 transition"
+                  href="/#pricing"
+                  className="text-slate-600 transition hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
                 >
                   Pricing
                 </a>
                 <a
-                  href="#testimonials"
-                  className="text-slate-600 hover:text-slate-900 transition"
+                  href="/#testimonials"
+                  className="text-slate-600 transition hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
                 >
                   Testimonials
                 </a>
@@ -52,13 +53,14 @@ const Navbar = () => {
                 </Link>
 
                 <UserButton />
+                <ThemeToggle />
               </>
             ) : (
               <>
                 <SignInButton>
                   <Button
                     variant={"outline"}
-                    className="border-primary/50 text-primary hover:text-black hover:bg-primary/10"
+                    className="border-primary/50 text-primary hover:bg-primary/10 hover:text-black dark:text-white"
                   >
                     Sign In
                   </Button>
@@ -69,6 +71,7 @@ const Navbar = () => {
                     Start Free Trial
                   </Button>
                 </Link>
+                <ThemeToggle />
               </>
             )}
           </div>
@@ -89,7 +92,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-slate-200">
+        <div className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 md:hidden">
           {isSignedIn ? (
             <div className="px-4 py-4 space-y-3">
           
@@ -107,20 +110,20 @@ const Navbar = () => {
               </div>
 
               <a
-                href="#features"
-                className="block text-slate-600 hover:text-slate-900"
+                href="/#features"
+                className="block text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               >
                 Features
               </a>
               <a
-                href="#pricing"
-                className="block text-slate-600 hover:text-slate-900"
+                href="/#pricing"
+                className="block text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               >
                 Pricing
               </a>
               <a
-                href="#testimonials"
-                className="block text-slate-600 hover:text-slate-900"
+                  href="/#testimonials"
+                className="block text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
               >
                 Testimonials
               </a>
@@ -130,6 +133,7 @@ const Navbar = () => {
                   Start Free Trial
                 </Button>
               </Link>
+              <ThemeToggle />
             </div>
           ) : (
             <div className="px-4 py-4">

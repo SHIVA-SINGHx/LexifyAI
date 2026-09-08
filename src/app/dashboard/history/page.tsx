@@ -61,7 +61,7 @@ const History = async () => {
                     {item.description?.substring(0, 100)}...
                   </TableCell>
                   <TableCell className="text-right">
-                    {(new Date(item.createdAt), "MMM dd, yyyy")}
+                    {(new Date(item.createdAt), "MMM DD, YYYY")}
                   </TableCell>
                 </TableRow>
               ))

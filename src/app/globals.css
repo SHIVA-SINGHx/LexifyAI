@@ -118,7 +118,19 @@
   }
   body {
     @apply bg-background text-foreground;
+    transition: background-color 180ms ease, color 180ms ease;
   }
+}
+
+@layer utilities {
+  .dark .bg-white { background-color: #0f172a; }
+  .dark .bg-gray-50 { background-color: #020617; }
+  .dark .text-slate-900 { color: #f8fafc; }
+  .dark .text-slate-600 { color: #cbd5e1; }
+  .dark .text-gray-700 { color: #e2e8f0; }
+  .dark .border-slate-200 { border-color: #334155; }
+  .dark .border-gray-200 { border-color: #334155; }
+  .dark .shadow-lg { --tw-shadow-color: rgb(2 6 23 / 0.5); }
 }
 
 @layer components {
