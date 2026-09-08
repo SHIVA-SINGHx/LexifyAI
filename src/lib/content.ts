@@ -13,7 +13,7 @@ export const contentTemplates = [
     category: "Youtube",
     icon: FaYoutube,
     aiPrompt:
-      "Give me youtube video description Ideas based on given video description outline and title and give me result in Rich Text Editor format",
+      "Give me youtube video description ideas based on the given video description outline and title.",
     slug: "generate-youtube-description",
     form: [
       {
@@ -36,7 +36,7 @@ export const contentTemplates = [
     category: "Youtube",
     icon: FaYoutube,
     aiPrompt:
-      "Give me youtube video idea on given video niche & outline topic and give me result in Rich Text Editor format",
+      "Give me youtube video ideas based on the given video niche and outline topic.",
     slug: "generate-youtube-video-idea",
     form: [
       {
@@ -58,7 +58,7 @@ export const contentTemplates = [
     category: "Instagram",
     icon: FaInstagram,
     aiPrompt:
-      "Give me some good examples of instagram hashtags on given niche & outline topic and give me result in Rich Text Editor format",
+      "Give me good examples of Instagram hashtags based on the given niche and outline topic.",
     slug: "generate-instagram-hashtags",
     form: [
       {
@@ -80,7 +80,7 @@ export const contentTemplates = [
     category: "Tiktok",
     icon: FaTiktok,
     aiPrompt:
-      "Give me some good examples of instagram hashtags on given niche & outline topic and give me result in Rich Text Editor format",
+      "Give me good examples of TikTok hashtags based on the given niche and outline topic.",
     slug: "generate-tiktok-hashtags",
     form: [
       {
@@ -102,7 +102,7 @@ export const contentTemplates = [
     category: "Linkedin",
     icon: FaLinkedin,
     aiPrompt:
-      "Give me some good examples of Linkedin Post idea on given niche & outline topic and give me result in Rich Text Editor format",
+      "Give me LinkedIn post ideas based on the given niche and outline topic.",
     slug: "generate-likedin-post",
     form: [
       {

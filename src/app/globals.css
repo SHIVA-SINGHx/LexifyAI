@@ -120,3 +120,62 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .content-editor .ql-editor {
+    min-height: 350px;
+    padding: 1.25rem 1.5rem;
+    color: #1f2937;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .content-editor .ql-editor p {
+    margin: 0 0 1rem;
+  }
+
+  .content-editor .ql-editor p:last-child,
+  .content-editor .ql-editor ul:last-child,
+  .content-editor .ql-editor ol:last-child {
+    margin-bottom: 0;
+  }
+
+  .content-editor .ql-editor h2,
+  .content-editor .ql-editor h3,
+  .content-editor .ql-editor h4 {
+    color: #111827;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .content-editor .ql-editor h2 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+  }
+
+  .content-editor .ql-editor h3 {
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  .content-editor .ql-editor h4 {
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .content-editor .ql-editor ul,
+  .content-editor .ql-editor ol {
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .content-editor .ql-editor li {
+    margin-bottom: 0.4rem;
+    padding-left: 0.25rem;
+  }
+
+  .content-editor .ql-editor a {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+}

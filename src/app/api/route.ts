@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       return new NextResponse("User Not Authenticated", { status: 401 });
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(createNewDoc, { status: 200 });
   } catch (error) {
+    console.error("[/api] POST error:", error);
     return new NextResponse("POST, NEW DOC ERROR", { status: 500 });
   }
 }

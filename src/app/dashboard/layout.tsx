@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { type ReactNode } from 'react'
 import Sidebar from './components/Sidebar'
 
-const layout = ({ children }) => {
+const layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className='bg-gray-50 h-screen'>
         <div className='md:w-64 hidden md:block fixed'>

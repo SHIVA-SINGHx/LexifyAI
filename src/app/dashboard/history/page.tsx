@@ -3,7 +3,6 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -13,7 +12,7 @@ import { auth } from "@clerk/nextjs/server";
 
 
 const History = async () => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return (

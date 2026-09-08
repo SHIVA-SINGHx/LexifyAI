@@ -28,7 +28,7 @@ export const Editor = ({ value, onChange }: { value: string; onChange: (v: strin
   if (!mounted) return null;
 
   return (
-    <div className="bg-white rounded-lg border p-2">
+    <div className="content-editor bg-white rounded-lg border p-2">
       <ReactQuill
         theme="snow"
         value={value}

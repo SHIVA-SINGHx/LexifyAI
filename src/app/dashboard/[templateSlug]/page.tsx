@@ -11,6 +11,7 @@ import { useUser } from "@clerk/nextjs";
 import axios from "@/lib/axios";
 import { contentTemplates } from "@/lib/content";
 import { Editor } from "./components/editor";
+import DOMPurify from "dompurify";
 
 interface TemplatePageProps {
   params: Promise<{ templateSlug: string }>;
@@ -23,6 +24,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [aiOutput, setAIOutput] = useState<string>("");
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const { isSignedIn, user } = useUser();
 
   const selectedTemplate = contentTemplates.find(
     (item) => item.slug === templateSlug
@@ -33,7 +35,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
       <div className="p-10">
         <h2 className="text-xl font-bold text-red-600">Template Not Found</h2>
         <p className="text-gray-600">
-          The requested template doesn't exist. Please go back to dashboard.
+          The requested template does not exist. Please go back to dashboard.
         </p>
       </div>
     );
@@ -51,29 +53,36 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
     try {
       // Build prompt from all form fields
       const selectedPrompt = selectedTemplate?.aiPrompt;
-      const finalAIPrompt = JSON.stringify(formData) + ", " + selectedPrompt;
+      const finalAIPrompt = `${JSON.stringify(formData)}, ${selectedPrompt}
+
+    Return only clean, valid HTML for the editor. Use semantic tags such as <h2>, <h3>, <p>, <strong>, <em>, <ul>, <ol>, and <li>. Do not return Markdown, RTF, JSON, CSS, JavaScript, or code fences. Do not include <html>, <head>, or <body> tags.`;
 
       console.log("Sending prompt:", finalAIPrompt);
 
       const result = await chatSession.sendMessage(finalAIPrompt);
       const generatedText = result.response.text();
-      setAIOutput(generatedText);
+      const cleanHtml = DOMPurify.sanitize(
+        generatedText.replace(/^```(?:html)?\s*/i, "").replace(/\s*```$/i, ""),
+        {
+          ALLOWED_TAGS: ["h2", "h3", "h4", "p", "strong", "em", "u", "s", "ul", "ol", "li", "br", "a"],
+          ALLOWED_ATTR: ["href", "target", "rel"],
+        }
+      );
+      setAIOutput(cleanHtml);
 
-      // Save to database
-      // const saveResult = await axios.post("/api/save-content", {
-      //   title: formData[selectedTemplate.form[0]?.name || "title"] || "Untitled",
-      //   description: generatedText,
-      //   templateUsed: selectedTemplate.name,
-      // }, { withCredentials: true });
-      // console.log("Saved:", saveResult.data);
-
-      // setIsLoading(false);
-    } catch (error: any) {
+      const saveResult = await axios.post("/api", {
+        title: formData[selectedTemplate.form[0]?.name || "title"] || "Untitled",
+        description: cleanHtml,
+        templateUsed: selectedTemplate.name,
+      }, { withCredentials: true });
+      console.log("Saved:", saveResult.data);
+    } catch (error: unknown) {
       console.error("Generation error:", error);
-      const serverMessage = error?.response?.data?.error;
-      if (error?.response?.status === 401) {
+      const response = (error as { response?: { status?: number; data?: { error?: string } } }).response;
+      const serverMessage = response?.data?.error;
+      if (response?.status === 401) {
         setAIOutput("You must be signed in to save generated content. Please sign in and try again.");
-      } else if (error?.response?.status === 500 && serverMessage) {
+      } else if (response?.status === 500 && serverMessage) {
         setAIOutput(`Server error: ${serverMessage}`);
       } else {
         setAIOutput("Error generating content. Check console.");
@@ -82,37 +91,9 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
     }
   };
 
-  const checkAuth = async () => {
-    try {
-      const res = await axios.get("/api/debug-auth", { withCredentials: true });
-      console.log("Auth debug:", res.data);
-      if (!res.data.isSignedIn) {
-        alert("Not signed in. Please sign in and try again.");
-      } else {
-        alert(`Signed in as ${res.data.userId}`);
-      }
-    } catch (err: any) {
-      console.error("Auth check failed:", err);
-      alert("Auth check failed. See console for details.");
-    }
-  }
-
-  // const checkDb = async () => {
-  //   try {
-  //     const res = await axios.get('/api/debug-db', { withCredentials: true });
-  //     console.log('DB debug:', res.data);
-  //     alert(`DB: total=${res.data.total} userId=${res.data.user?.userId ?? 'none'}`);
-  //   } catch (err: any) {
-  //     console.error('Debug DB failed:', err);
-  //     alert('Debug DB failed. See console.');
-  //   }
-  // }
-
-  const { isSignedIn, user } = useUser();
-
   return (
     <div className="p-8">
-      <div className="mt-5 py-6 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded">
+      <div className="mt-5 py-6 px-4 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded">
         <h2 className="font-semibold text-lg">{selectedTemplate.name}</h2>
         <p className="text-sm text-blue-100">{selectedTemplate.desc}</p>
         <p className="text-xs text-blue-100 mt-2">
@@ -162,7 +143,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
 
         <div className="flex gap-2 items-center mt-5">
           <Button
-            className="cursor-pointer bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="cursor-pointer bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
             type="submit"
             disabled={isLoading}
           >

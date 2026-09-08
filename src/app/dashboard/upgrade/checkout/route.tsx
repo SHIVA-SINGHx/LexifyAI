@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECERT_KEY as string, {
 
 export async function POST(req: Request) {
   try {
-    const { userId, emailAddresses } = auth();
+    const { userId } = await auth();
     console.warn("[/api/upgrade/checkout] cookies:", req.headers.get("cookie"));
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -29,13 +29,6 @@ export async function POST(req: Request) {
       },
     ];
 
-    let purchase = await db.stripe_customer.create({
-      data: {
-        userId: userId,
-        credit: 10000,
-      },
-    });
-
     let stripeCustomer = await db.stripe_customer.findUnique({
       where: {
         userId: userId,
@@ -46,11 +39,12 @@ export async function POST(req: Request) {
     });
 
     if (!stripeCustomer) {
+      const user = await currentUser();
       const customer = await stripe.customers.create({
-        email: emailAddresses?.[0]?.emailAddress ?? undefined,
+        email: user?.emailAddresses[0]?.emailAddress,
       });
 
-      let stripeCustomer = await db.stripe_customer.create({
+      stripeCustomer = await db.stripe_customer.create({
         data: {
           userId: userId,
           stripeCustomerId: customer.id,
