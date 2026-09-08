@@ -34,7 +34,7 @@ export const Editor = ({ value, onChange }: { value: string; onChange: (v: strin
         value={value}
         onChange={onChange}
         modules={modules}
-        className="h-[350px] pb-10 whitespace-pre-wrap"
+        className="output-quill"
       />
     </div>
   );

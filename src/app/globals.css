@@ -136,10 +136,26 @@
 @layer components {
   .content-editor .ql-editor {
     min-height: 350px;
+    max-height: 520px;
+    overflow-y: auto;
     padding: 1.25rem 1.5rem;
     color: #1f2937;
     font-size: 1rem;
     line-height: 1.75;
+  }
+
+  .content-editor .ql-container {
+    height: 350px;
+    border-color: #e2e8f0;
+  }
+
+  .content-editor .ql-toolbar {
+    border-color: #e2e8f0;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+
+  .content-editor .ql-container {
+    border-radius: 0 0 0.5rem 0.5rem;
   }
 
   .content-editor .ql-editor p {
@@ -189,5 +205,47 @@
   .content-editor .ql-editor a {
     color: #2563eb;
     text-decoration: underline;
+  }
+
+  .dark .content-editor {
+    border-color: #334155;
+    background-color: #0f172a;
+  }
+
+  .dark .content-editor .ql-toolbar,
+  .dark .content-editor .ql-container {
+    border-color: #334155;
+  }
+
+  .dark .content-editor .ql-toolbar {
+    background-color: #1e293b;
+  }
+
+  .dark .content-editor .ql-editor {
+    color: #e2e8f0;
+    background-color: #0f172a;
+  }
+
+  .dark .content-editor .ql-editor h2,
+  .dark .content-editor .ql-editor h3,
+  .dark .content-editor .ql-editor h4 {
+    color: #f8fafc;
+  }
+
+  .dark .content-editor .ql-stroke {
+    stroke: #cbd5e1;
+  }
+
+  .dark .content-editor .ql-fill {
+    fill: #cbd5e1;
+  }
+
+  .dark .content-editor .ql-picker {
+    color: #cbd5e1;
+  }
+
+  .dark .content-editor .ql-picker-options {
+    border-color: #334155;
+    background-color: #1e293b;
   }
 }

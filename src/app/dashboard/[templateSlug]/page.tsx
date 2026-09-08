@@ -92,7 +92,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
   };
 
   return (
-    <div className="p-8">
+    <div className="min-h-screen p-4 text-slate-900 dark:text-slate-100 sm:p-8">
       <div className="mt-5 py-6 px-4 bg-linear-to-r from-blue-600 to-purple-600 text-white rounded">
         <h2 className="font-semibold text-lg">{selectedTemplate.name}</h2>
         <p className="text-sm text-blue-100">{selectedTemplate.desc}</p>
@@ -102,7 +102,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
       </div>
 
       <form onSubmit={generateAIContent}>
-        <div className="mt-8 bg-white p-6 rounded shadow space-y-6">
+        <div className="mt-8 space-y-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
           {selectedTemplate.form.map((form) => (
             <div key={form.name || form.label}>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -163,7 +163,7 @@ const TemplatePage = ({ params }: TemplatePageProps) => {
       </form>
 
       <div className="my-10">
-        <h3 className="text-lg font-semibold mb-2">Generated Content</h3>
+        <h3 className="mb-3 text-lg font-semibold text-slate-900 dark:text-white">Generated Content</h3>
         <Editor value={aiOutput} onChange={() => {}} />
       </div>
     </div>
